@@ -19,23 +19,31 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1) 
-        {
-            animator.SetFloat("LastMove", Input.GetAxisRaw("Horizontal"));
-        } 
+        Debug.Log(animator.GetBool("Attacking"));
+        if (!animator.GetBool("Attacking")) {
+            // Debug.Log(animator.GetBool("Attacking"));
+            if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1) 
+            {
+                animator.SetFloat("LastMove", Input.GetAxisRaw("Horizontal"));
+            } 
 
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
 
-        animator.SetFloat("Horizontal", movement.x);
-        animator.SetFloat("Speed", movement.sqrMagnitude);
-        
-        if (Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1) 
-        {
-            // Debug.Log(animator.GetFloat("LastMove"));
-            animator.SetFloat("Horizontal", animator.GetFloat("LastMove"));
-        
-        } 
+            animator.SetFloat("Horizontal", movement.x);
+            animator.SetFloat("Speed", movement.sqrMagnitude);
+            
+            if (Input.GetAxisRaw("Vertical") == 1 || Input.GetAxisRaw("Vertical") == -1) 
+            {
+                // Debug.Log(animator.GetFloat("LastMove"));
+                animator.SetFloat("Horizontal", animator.GetFloat("LastMove"));
+            
+            }
+        } else {
+            // make locked sound
+        }
+         
+
         
 
         // Debug.Log(Input.GetAxisRaw("Horizontal"));
@@ -44,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate() 
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    public void Stop()
+    {
+        movement = new Vector2(0,0);
     }
 
 }

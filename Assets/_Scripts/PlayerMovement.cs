@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(animator.GetBool("Attacking"));
+        // Debug.Log(animator.GetBool("Attacking"));
         if (!animator.GetBool("Attacking")) {
             // Debug.Log(animator.GetBool("Attacking"));
             if (Input.GetAxisRaw("Horizontal") == 1 || Input.GetAxisRaw("Horizontal") == -1) 

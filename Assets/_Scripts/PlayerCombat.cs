@@ -5,12 +5,16 @@ using UnityEngine;
 public class PlayerCombat : MonoBehaviour
 {
     public Animator animator;
-    public Transform player;
     public PlayerMovement playerMovement;
+    public LayerMask enemyLayers;
+
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
+    public int attackDamage = 1;
+
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -29,10 +33,18 @@ public class PlayerCombat : MonoBehaviour
 
     void Attack() 
     {
-        animator.SetTrigger("Attack");
         // Play animation
+        animator.SetTrigger("Attack"); 
+    
         // Detect Enemies in range
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
+    
         // Apply damage
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Goblin>().TakeDamage(attackDamage);
+            Debug.Log(enemy.name + " hit");
+        }
     }
 
     void DoubleAttack()
@@ -48,4 +60,12 @@ public class PlayerCombat : MonoBehaviour
     {
         animator.SetBool("Attacking", false);
     }
+
+    void OnDrawGizmosSelected()
+    {
+        if (attackPoint == null)
+            return;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
+
 }
